@@ -1,8 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { Resend } from "resend"
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 function formatDate(dateString: string): string {
   if (!dateString) return ""
 
@@ -311,6 +309,7 @@ Vezi pe site: https://autopeloc.ro
 Mesaj intern automat – autopeloc.ro | contact@autopeloc.ro | 0790 743 974`
 
     if (process.env.RESEND_API_KEY) {
+      const resend = new Resend(process.env.RESEND_API_KEY)
       try {
         const fromEmail = process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev"
 

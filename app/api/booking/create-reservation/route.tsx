@@ -4,8 +4,6 @@ import { Resend } from "resend"
 
 export const dynamic = "force-dynamic"
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 async function detectReservationsSchema(supabase: any): Promise<"new" | "legacy"> {
   // Try selecting the 'city' column (new schema)
   const testNew = await supabase.from("reservations").select("city").limit(1)
@@ -192,69 +190,74 @@ export async function POST(request: NextRequest) {
     }
 
     // Send confirmation emails
-    try {
-      const fromEmail = process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev"
-      const internalEmail = process.env.INTERNAL_NOTIFICATION_EMAIL || "razvan42@icloud.com"
+    if (process.env.RESEND_API_KEY) {
+      const resend = new Resend(process.env.RESEND_API_KEY)
+      try {
+        const fromEmail = process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev"
+        const internalEmail = process.env.INTERNAL_NOTIFICATION_EMAIL || "razvan42@icloud.com"
 
-      // Email to customer
-      await resend.emails.send({
-        from: fromEmail,
-        to: contact.email,
-        subject: "Confirmare rezervare - autopeloc.ro",
-        html: `
-          <h2>Rezervare confirmată</h2>
-          <p>Bună ${contact.name},</p>
-          <p>Am primit cererea ta de rezervare pentru mașina de înlocuire.</p>
-          <h3>Detalii rezervare:</h3>
-          <ul>
-            <li><strong>Mașina ta:</strong> ${userCar?.brand} ${userCar?.model} (${userCar?.year})</li>
-            <li><strong>Oraș:</strong> ${city || "Nespecificat"}</li>
-            <li><strong>Contact:</strong> ${contact.phone}</li>
-          </ul>
-          <p>Te vom contacta în cel mai scurt timp pentru confirmarea disponibilității.</p>
-          <p>Cu respect,<br>Echipa autopeloc.ro</p>
-        `,
-      })
+        // Email to customer
+        await resend.emails.send({
+          from: fromEmail,
+          to: contact.email,
+          subject: "Confirmare rezervare - autopeloc.ro",
+          html: `
+            <h2>Rezervare confirmată</h2>
+            <p>Bună ${contact.name},</p>
+            <p>Am primit cererea ta de rezervare pentru mașina de înlocuire.</p>
+            <h3>Detalii rezervare:</h3>
+            <ul>
+              <li><strong>Mașina ta:</strong> ${userCar?.brand} ${userCar?.model} (${userCar?.year})</li>
+              <li><strong>Oraș:</strong> ${city || "Nespecificat"}</li>
+              <li><strong>Contact:</strong> ${contact.phone}</li>
+            </ul>
+            <p>Te vom contacta în cel mai scurt timp pentru confirmarea disponibilității.</p>
+            <p>Cu respect,<br>Echipa autopeloc.ro</p>
+          `,
+        })
 
-      // Email to internal team
-      await resend.emails.send({
-        from: fromEmail,
-        to: internalEmail,
-        subject: `Rezervare nouă - ${contact.name}`,
-        html: `
-          <h2>Rezervare nouă primită</h2>
-          <h3>Detalii client:</h3>
-          <ul>
-            <li><strong>Nume:</strong> ${contact.name}</li>
-            <li><strong>Email:</strong> ${contact.email}</li>
-            <li><strong>Telefon:</strong> ${contact.phone}</li>
-          </ul>
-          <h3>Detalii mașină client:</h3>
-          <ul>
-            <li><strong>Marca:</strong> ${userCar?.brand}</li>
-            <li><strong>Model:</strong> ${userCar?.model}</li>
-            <li><strong>An:</strong> ${userCar?.year}</li>
-            <li><strong>Transmisie:</strong> ${userCar?.transmission}</li>
-          </ul>
-          <h3>Mașină solicitată:</h3>
-          <ul>
-            <li><strong>Marca:</strong> ${replacementCar?.brand || "TBD"}</li>
-            <li><strong>Model:</strong> ${replacementCar?.model || "TBD"}</li>
-            <li><strong>Categorie:</strong> ${replacementCar?.category || "TBD"}</li>
-          </ul>
-          <h3>Alte detalii:</h3>
-          <ul>
-            <li><strong>Oraș:</strong> ${city || "Nespecificat"}</li>
-            <li><strong>Vinovat:</strong> Nu</li>
-            <li><strong>Document:</strong> <a href="${documentUrl}">Vezi document</a></li>
-          </ul>
-          <p><strong>ID Rezervare:</strong> ${reservation.id}</p>
-        `,
-      })
+        // Email to internal team
+        await resend.emails.send({
+          from: fromEmail,
+          to: internalEmail,
+          subject: `Rezervare nouă - ${contact.name}`,
+          html: `
+            <h2>Rezervare nouă primită</h2>
+            <h3>Detalii client:</h3>
+            <ul>
+              <li><strong>Nume:</strong> ${contact.name}</li>
+              <li><strong>Email:</strong> ${contact.email}</li>
+              <li><strong>Telefon:</strong> ${contact.phone}</li>
+            </ul>
+            <h3>Detalii mașină client:</h3>
+            <ul>
+              <li><strong>Marca:</strong> ${userCar?.brand}</li>
+              <li><strong>Model:</strong> ${userCar?.model}</li>
+              <li><strong>An:</strong> ${userCar?.year}</li>
+              <li><strong>Transmisie:</strong> ${userCar?.transmission}</li>
+            </ul>
+            <h3>Mașină solicitată:</h3>
+            <ul>
+              <li><strong>Marca:</strong> ${replacementCar?.brand || "TBD"}</li>
+              <li><strong>Model:</strong> ${replacementCar?.model || "TBD"}</li>
+              <li><strong>Categorie:</strong> ${replacementCar?.category || "TBD"}</li>
+            </ul>
+            <h3>Alte detalii:</h3>
+            <ul>
+              <li><strong>Oraș:</strong> ${city || "Nespecificat"}</li>
+              <li><strong>Vinovat:</strong> Nu</li>
+              <li><strong>Document:</strong> <a href="${documentUrl}">Vezi document</a></li>
+            </ul>
+            <p><strong>ID Rezervare:</strong> ${reservation.id}</p>
+          `,
+        })
 
-      console.log("[v0] Confirmation emails sent")
-    } catch (emailError) {
-      console.error("[v0] Email error:", emailError)
+        console.log("[v0] Confirmation emails sent")
+      } catch (emailError) {
+        console.error("[v0] Email error:", emailError)
+      }
+    } else {
+      console.warn("⚠ RESEND_API_KEY not configured - skipping email notifications")
     }
 
     // Sync to admin platform (if configured)
