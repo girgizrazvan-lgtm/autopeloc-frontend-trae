@@ -1,0 +1,572 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  color-scheme: light;
+  /* Updated background to slate-50 for light mode */
+  --background: oklch(0.984 0.002 247.858); /* slate-50 */
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+
+  /* Adding teal/turquoise accent colors for the insurance theme */
+  --teal: oklch(0.648 0.129 192.4); /* #14B8A6 - teal-500 */
+  --teal-light: oklch(0.961 0.026 192.4); /* #CCFBF1 - very light teal for badge */
+  --teal-foreground: oklch(1 0 0); /* white text on teal */
+  --black: oklch(0 0 0); /* pure black */
+}
+
+.dark {
+  color-scheme: dark;
+  /* Fixed dark mode selector from :is(.dark *) to .dark */
+  /* Pure black background for dark mode */
+  --background: oklch(0 0 0); /* Pure black */
+  --foreground: oklch(1 0 0); /* Pure white */
+  --card: oklch(0.1 0 0); /* Very dark gray for cards */
+  --card-foreground: oklch(1 0 0);
+  --popover: oklch(0.1 0 0);
+  --popover-foreground: oklch(1 0 0);
+  /* Making primary white in dark mode for button visibility */
+  --primary: oklch(1 0 0); /* Pure white */
+  --primary-foreground: oklch(0 0 0); /* Black text on white buttons */
+  --secondary: oklch(0.15 0 0);
+  --secondary-foreground: oklch(1 0 0);
+  --muted: oklch(0.15 0 0);
+  --muted-foreground: oklch(0.7 0 0);
+  --accent: oklch(0.15 0 0);
+  --accent-foreground: oklch(1 0 0);
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  /* Making borders lighter for visibility */
+  --border: oklch(0.3 0 0);
+  --input: oklch(0.3 0 0);
+  --ring: oklch(0.439 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.1 0 0);
+  --sidebar-foreground: oklch(1 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.15 0 0);
+  --sidebar-accent-foreground: oklch(1 0 0);
+  --sidebar-border: oklch(0.2 0 0);
+  --sidebar-ring: oklch(0.439 0 0);
+
+  /* Updating teal to be brighter in dark mode for better contrast */
+  --teal: oklch(0.75 0.15 192.4); /* Brighter teal for dark mode */
+  --teal-light: oklch(0.2 0.08 192.4); /* Darker teal-light for dark mode backgrounds */
+  --teal-foreground: oklch(0 0 0); /* Black text on bright teal */
+
+  /* Adding missing black variable for dark mode */
+  --black: oklch(0 0 0); /* pure black */
+}
+
+@theme inline {
+  /* optional: --font-sans, --font-serif, --font-mono if they are applied in the layout.tsx */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Adding teal color tokens to theme */
+  --color-teal: var(--teal);
+  --color-teal-light: var(--teal-light);
+  --color-teal-foreground: var(--teal-foreground);
+  --color-black: var(--black);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Adding animation utility classes */
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out;
+}
+
+.animate-fade-in-scale {
+  animation: fade-in-scale 0.6s ease-out;
+}
+
+.animate-bounce-subtle {
+  animation: bounce-subtle 3s ease-in-out infinite;
+}
+
+/* Adding shake animation for call button */
+.animate-shake {
+  animation: shake 0.5s ease-in-out;
+  animation-delay: 2s;
+  animation-iteration-count: infinite;
+  animation-duration: 5s;
+}
+
+/* Adding blob animation for floating gradient backgrounds */
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-3000 {
+  animation-delay: 3s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+.animation-delay-5000 {
+  animation-delay: 5s;
+}
+
+.animation-delay-6000 {
+  animation-delay: 6s;
+}
+
+/* Adding float animation for geometric shapes */
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Adding wave animations for flowing background patterns */
+.animate-wave {
+  animation: wave 8s ease-in-out infinite;
+}
+
+.animate-wave-slow {
+  animation: wave 12s ease-in-out infinite;
+}
+
+/* Adding pulse-slow animation for light beams */
+.animate-pulse-slow {
+  animation: pulse-slow 4s ease-in-out infinite;
+}
+
+/* Adding gradient shift animation for hero background */
+.animate-gradient-shift {
+  animation: gradient-shift 15s ease infinite;
+}
+
+/* Adding radial gradient utility */
+.bg-gradient-radial {
+  background: radial-gradient(circle, var(--tw-gradient-stops));
+}
+
+.peloc-hash {
+  color: oklch(0 0 0); /* black in light mode */
+}
+
+.dark .peloc-hash {
+  color: oklch(1 0 0); /* white in dark mode */
+}
+
+.peloc-text {
+  color: oklch(0.648 0.129 192.4); /* teal-600 in light mode */
+}
+
+.dark .peloc-text {
+  color: oklch(0.75 0.15 192.4); /* teal-400 in dark mode */
+}
+
+/* Adding custom night mode filter for hero SVG */
+.hero-svg-night {
+  filter: none;
+  transition: filter 0.3s ease-in-out;
+}
+
+.dark .hero-svg-night {
+  filter: brightness(0.4) contrast(1.3) saturate(1.3) drop-shadow(0 0 8px rgba(20, 184, 166, 0.6))
+    drop-shadow(0 0 15px rgba(20, 184, 166, 0.5)) drop-shadow(0 0 25px rgba(20, 184, 166, 0.4))
+    drop-shadow(0 0 40px rgba(20, 184, 166, 0.3));
+}
+
+/* Adding powerful neon glow effect for step cards in dark mode */
+.neon-card-glow {
+  transition: all 0.5s ease;
+}
+
+.dark .neon-card-glow {
+  box-shadow: 0 0 5px rgba(20, 184, 166, 0.15), 0 0 10px rgba(20, 184, 166, 0.1), inset 0 0 5px rgba(20, 184, 166, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  animation: neon-pulse-subtle 4s ease-in-out infinite;
+}
+
+.dark .neon-card-glow:hover {
+  box-shadow: 0 0 8px rgba(20, 184, 166, 0.2), 0 0 15px rgba(20, 184, 166, 0.15), inset 0 0 8px rgba(20, 184, 166, 0.08);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Adding custom class for secondary CTA button with guaranteed theme switching */
+.secondary-cta-button {
+  background-color: #000000;
+  color: #ffffff;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+}
+
+.secondary-cta-button:hover {
+  background-color: #1f2937;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+  transform: scale(1.05);
+}
+
+.dark .secondary-cta-button {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  box-shadow: 0 10px 15px -3px rgba(255, 255, 255, 0.4) !important;
+}
+
+.dark .secondary-cta-button:hover {
+  background-color: #f3f4f6 !important;
+  box-shadow: 0 20px 25px -5px rgba(255, 255, 255, 0.5) !important;
+  transform: scale(1.05);
+}
+
+/* Adding blog article typography styles */
+.blog-article-content {
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  font-size: 18px;
+  line-height: 1.7;
+  color: #222;
+}
+
+.blog-article-content h1 {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1.5em;
+  color: #111;
+}
+
+.blog-article-content h2 {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-top: 3em;
+  margin-bottom: 1em;
+  padding-top: 1.5em;
+  border-top: 1px solid #e5e7eb;
+  color: #111;
+}
+
+.blog-article-content h2:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+.blog-article-content h3 {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-top: 2em;
+  margin-bottom: 0.8em;
+  color: #333;
+}
+
+.blog-article-content p {
+  margin-bottom: 1.2em;
+  line-height: 1.7;
+}
+
+.blog-article-content ul,
+.blog-article-content ol {
+  margin-bottom: 1.2em;
+  padding-left: 1.5em;
+}
+
+.blog-article-content li {
+  margin-bottom: 0.5em;
+  line-height: 1.6;
+}
+
+.blog-article-content strong {
+  font-weight: 600;
+  color: #111;
+}
+
+.blog-article-content a {
+  color: #0070f3;
+  text-decoration: none;
+}
+
+.blog-article-content a:hover {
+  text-decoration: underline;
+}
+
+.blog-article-content blockquote {
+  background-color: #f9fafb;
+  border-left: 4px solid #d0d0d0;
+  padding: 1em 1.5em;
+  margin: 1.5em 0;
+  font-style: italic;
+}
+
+.blog-article-content code {
+  background-color: #f3f4f6;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-size: 0.9em;
+  font-family: "Courier New", monospace;
+}
+
+.blog-article-content pre {
+  background-color: #1f2937;
+  color: #f9fafb;
+  padding: 1em;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin: 1.5em 0;
+}
+
+.blog-article-content pre code {
+  background-color: transparent;
+  padding: 0;
+  color: inherit;
+}
+
+.blog-article-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 1.5em 0;
+}
+
+.blog-article-content hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 2em 0;
+}
+
+/* Dark mode styles for blog articles */
+.dark .blog-article-content {
+  color: #e5e7eb;
+}
+
+.dark .blog-article-content h1,
+.dark .blog-article-content h2,
+.dark .blog-article-content h3 {
+  color: #f9fafb;
+}
+
+.dark .blog-article-content h2 {
+  border-top-color: #374151;
+}
+
+.dark .blog-article-content strong {
+  color: #f9fafb;
+}
+
+.dark .blog-article-content blockquote {
+  background-color: #1f2937;
+  border-left-color: #4b5563;
+}
+
+.dark .blog-article-content code {
+  background-color: #374151;
+  color: #e5e7eb;
+}
+
+.dark .blog-article-content hr {
+  border-top-color: #374151;
+}
+
+@keyframes shake {
+  0%,
+  90%,
+  100% {
+    transform: translateX(0);
+  }
+  92% {
+    transform: translateX(-8px);
+  }
+  94% {
+    transform: translateX(8px);
+  }
+  96% {
+    transform: translateX(-8px);
+  }
+  98% {
+    transform: translateX(8px);
+  }
+}
+
+/* Adding blob animation keyframes for smooth floating effect */
+@keyframes blob {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+/* Adding float animation keyframes for geometric shapes */
+@keyframes float {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(5deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+/* Adding wave animation keyframes for flowing patterns */
+@keyframes wave {
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+  50% {
+    transform: translateX(-25px) translateY(-10px);
+  }
+  100% {
+    transform: translateX(0) translateY(0);
+  }
+}
+
+/* Adding pulse-slow animation keyframes for light beams */
+@keyframes pulse-slow {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* Adding gradient shift animation keyframes for dynamic background */
+@keyframes gradient-shift {
+  0% {
+    transform: translate(0%, 0%) rotate(0deg);
+  }
+  25% {
+    transform: translate(5%, 5%) rotate(90deg);
+  }
+  50% {
+    transform: translate(0%, 10%) rotate(180deg);
+  }
+  75% {
+    transform: translate(-5%, 5%) rotate(270deg);
+  }
+  100% {
+    transform: translate(0%, 0%) rotate(360deg);
+  }
+}
+
+/* Adding neon pulse animation keyframes */
+@keyframes neon-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(20, 184, 166, 0.4), 0 0 40px rgba(20, 184, 166, 0.3), 0 0 60px rgba(20, 184, 166, 0.2), 0
+      0 80px rgba(20, 184, 166, 0.1), inset 0 0 20px rgba(20, 184, 166, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(20, 184, 166, 0.6), 0 0 60px rgba(20, 184, 166, 0.5), 0 0 90px rgba(20, 184, 166, 0.4), 0
+      0 120px rgba(20, 184, 166, 0.3), inset 0 0 30px rgba(20, 184, 166, 0.2);
+  }
+}
+
+/* Adding neon pulse animation keyframes */
+@keyframes neon-pulse-subtle {
+  0%,
+  100% {
+    box-shadow: 0 0 5px rgba(20, 184, 166, 0.15), 0 0 10px rgba(20, 184, 166, 0.1), inset 0 0 5px
+      rgba(20, 184, 166, 0.05);
+  }
+  50% {
+    box-shadow: 0 0 8px rgba(20, 184, 166, 0.2), 0 0 15px rgba(20, 184, 166, 0.15), inset 0 0 8px
+      rgba(20, 184, 166, 0.08);
+  }
+}
