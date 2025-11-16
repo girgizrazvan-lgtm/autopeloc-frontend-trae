@@ -1,5 +1,6 @@
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { Breadcrumbs } from "@/components/breadcrumbs"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -23,9 +24,17 @@ export default function DespreNoi() {
   return (
     <main className="min-h-screen transition-colors duration-300">
       <Header />
+      <div className="container mx-auto px-4 pt-24">
+        <Breadcrumbs
+          items={[
+            { name: "Acasă", url: "/" },
+            { name: "Despre Noi", url: "/despre-noi" },
+          ]}
+        />
+      </div>
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden">
+      <section className="relative pt-8 pb-20 md:pt-12 md:pb-32 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-background to-background" />
         <div className="absolute top-20 right-1/4 w-96 h-96 bg-teal/10 rounded-full blur-3xl" />
 

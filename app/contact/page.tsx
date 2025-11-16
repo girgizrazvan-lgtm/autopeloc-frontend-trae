@@ -1,8 +1,36 @@
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { Breadcrumbs } from "@/components/breadcrumbs"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
+  title: "Contact - autopeloc.ro | Sună-ne 24/7",
+  description:
+    "Contactează-ne pentru mașină la schimb RCA. Disponibili 24/7: 0790 743 974, WhatsApp, email contact@autopeloc.ro. Asistență imediată pentru accidente auto.",
+  keywords: "contact autopeloc, telefon mașină schimb, WhatsApp autopeloc, email contact, asistență 24/7",
+  openGraph: {
+    title: "Contact - autopeloc.ro | Sună-ne 24/7",
+    description:
+      "Disponibili 24/7 pentru mașină la schimb RCA. Contactează-ne: 0790 743 974, WhatsApp, email contact@autopeloc.ro",
+    type: "website",
+    url: "https://autopeloc.ro/contact",
+    siteName: "autopeloc.ro",
+    locale: "ro_RO",
+    images: [
+      {
+        url: "/images/dashboard.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Contact - autopeloc.ro",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contact - autopeloc.ro | Sună-ne 24/7",
+    description: "Disponibili 24/7 pentru mașină la schimb RCA. Contactează-ne: 0790 743 974, WhatsApp, email.",
+    images: ["/images/dashboard.jpg"],
+  },
   alternates: {
     canonical: "https://autopeloc.ro/contact",
   },
@@ -55,9 +83,56 @@ const LinkedinIcon = () => (
 )
 
 export default function ContactPage() {
+  const localBusinessSchema = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: "autopeloc.ro",
+    description: "Servicii de mașină la schimb RCA, consultanță dosar daună și expertize tehnice auto",
+    telephone: "+40790743974",
+    email: "contact@autopeloc.ro",
+    url: "https://autopeloc.ro",
+    priceRange: "$$",
+    openingHoursSpecification: {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+      ],
+      opens: "00:00",
+      closes: "23:59",
+    },
+    areaServed: {
+      "@type": "Country",
+      name: "România",
+    },
+    serviceArea: {
+      "@type": "Country",
+      name: "România",
+    },
+  }
+
   return (
     <div className="min-h-screen flex flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(localBusinessSchema),
+        }}
+      />
       <Header />
+      <div className="container mx-auto px-4 pt-24">
+        <Breadcrumbs
+          items={[
+            { name: "Acasă", url: "/" },
+            { name: "Contact", url: "/contact" },
+          ]}
+        />
+      </div>
       <main className="flex-1">
         <section className="relative min-h-screen" aria-label="Contact section">
           {/* Background similar cu Hero Section */}

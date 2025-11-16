@@ -9,11 +9,79 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { ReservationDialog } from "@/components/reservation-dialog"
 import { QuickReserveDialog } from "./quick-reserve-dialog"
 
+interface VehicleFromDB {
+  id: string
+  name: string
+  brand: string
+  model: string
+  year: number | null
+  image: string | null
+  category: string
+  engine: string | null
+  transmission: string | null
+  seats: number | null
+  fuel: string | null
+  sippCode: string
+  acrissCode: string | null
+}
+
 export function AllModels() {
   const searchParams = useSearchParams()
   const [searchQuery, setSearchQuery] = useState("")
-  const allModels = useMemo(() => getAllCars(), [])
-  const [filteredModels, setFilteredModels] = useState(allModels)
+  const [vehicles, setVehicles] = useState<VehicleFromDB[]>([])
+  const [loading, setLoading] = useState(true)
+  
+  // Convert DB vehicles to CarType format
+  const allModels = useMemo<CarType[]>(() => {
+    if (vehicles.length === 0) {
+      // Fallback to static data if no vehicles in DB
+      return getAllCars()
+    }
+    return vehicles.map((v) => ({
+      name: v.name,
+      image: v.image || "/placeholder.svg",
+      specs: {
+        engine: v.engine || "N/A",
+        transmission: v.transmission || "N/A",
+        seats: v.seats || 5,
+        fuel: v.fuel || "N/A",
+      },
+      sippCode: v.sippCode,
+      category: v.category,
+    }))
+  }, [vehicles])
+  
+  const [filteredModels, setFilteredModels] = useState<CarType[]>(allModels)
+  
+      useEffect(() => {
+        // Load vehicles from API
+        fetch("/api/vehicles")
+          .then((res) => {
+            if (!res.ok) {
+              console.warn(`[Fleet] API returned ${res.status}, using fallback data`)
+              return []
+            }
+            return res.json()
+          })
+          .then((data) => {
+            if (Array.isArray(data) && data.length > 0) {
+              console.log(`[Fleet] Successfully loaded ${data.length} vehicles from database`)
+              setVehicles(data)
+            } else {
+              console.warn("[Fleet] No vehicles found in database, using fallback data")
+            }
+          })
+          .catch((error) => {
+            console.error("[Fleet] Error loading vehicles from API:", {
+              message: error?.message || "Unknown error",
+              name: error?.name,
+            })
+            console.warn("[Fleet] Falling back to static vehicle data")
+          })
+          .finally(() => {
+            setLoading(false)
+          })
+      }, [])
   const [displayCount, setDisplayCount] = useState(12)
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [selectedTransmission, setSelectedTransmission] = useState<string | null>(null)
@@ -34,8 +102,32 @@ export function AllModels() {
   useEffect(() => {
     const cat = searchParams.get("cat")
     const trans = searchParams.get("trans")
+    const cityFromUrl = searchParams.get("city")
+    const filterFromUrl = searchParams.get("filter")
+    const atFaultFromUrl = searchParams.get("atFault")
+    
     setSelectedCategory(cat)
     setSelectedTransmission(trans)
+    
+    // Pre-fill city if provided in URL
+    if (cityFromUrl) {
+      setPrefilledData((prev) => ({
+        ...(prev || {}),
+        city: cityFromUrl,
+        atFault: atFaultFromUrl || "nu",
+        serviceStartDate: prev?.serviceStartDate || "",
+        serviceStartTime: prev?.serviceStartTime || "",
+        serviceEndDate: prev?.serviceEndDate || "",
+        serviceEndTime: prev?.serviceEndTime || "",
+      }))
+    }
+    
+    // If filter=available, we could filter vehicles here in the future
+    // For now, all vehicles are shown as available, so we just track the parameter
+    if (filterFromUrl === "available") {
+      // Could add filtering logic here if we track availability status
+      console.log("[Fleet] Showing only available vehicles")
+    }
   }, [searchParams])
 
   useEffect(() => {
@@ -61,15 +153,18 @@ export function AllModels() {
     let filtered = allModels
 
     if (selectedCategory) {
-      const category = carClasses.find((c) => c.title === selectedCategory)
-      if (category) {
-        filtered = category.cars
-      }
+      filtered = filtered.filter((model) => {
+        if ("category" in model) {
+          return model.category === selectedCategory
+        }
+        const category = carClasses.find((c) => c.title === selectedCategory)
+        return category?.cars.some((c) => c.name === model.name)
+      })
     }
 
     if (selectedTransmission) {
       filtered = filtered.filter((model) => {
-        return model.specs.transmission.includes(selectedTransmission)
+        return model.specs.transmission?.includes(selectedTransmission)
       })
     }
 
@@ -84,7 +179,10 @@ export function AllModels() {
     setDisplayCount((prev) => prev + 12)
   }
 
-  const getCategoryForCar = (car: CarType) => {
+  const getCategoryForCar = (car: CarType & { category?: string }) => {
+    if (car.category) {
+      return car.category
+    }
     const category = carClasses.find((c) => c.cars.some((c) => c.name === car.name))
     return category?.title || "Unknown"
   }
@@ -143,7 +241,7 @@ export function AllModels() {
                       Disponibil
                     </span>
                   </div>
-                  <p className="text-sm text-muted-foreground mb-4">{getCategoryForCar(model)}</p>
+                  <p className="text-sm text-muted-foreground mb-4">{getCategoryForCar(model as CarType & { category?: string })}</p>
 
                   {/* Specs grid */}
                   <div className="grid grid-cols-2 gap-2 mb-4 text-xs text-muted-foreground">

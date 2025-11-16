@@ -1,8 +1,14 @@
 import { NextResponse } from "next/server"
 import { Resend } from "resend"
+import { requireAdmin } from "@/lib/admin-auth"
 
 export async function POST(request: Request) {
   try {
+    try {
+      await requireAdmin()
+    } catch (error: any) {
+      return NextResponse.json({ success: false, error: "Neautorizat" }, { status: 401 })
+    }
     const { from, to, subject, body } = await request.json()
 
     if (!process.env.RESEND_API_KEY) {

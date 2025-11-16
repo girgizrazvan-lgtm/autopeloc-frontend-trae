@@ -1,25 +1,88 @@
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { Breadcrumbs } from "@/components/breadcrumbs"
 import type { Metadata } from "next"
 import { CheckCircle2, Phone } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "Consultanță completă pentru dosarul tău de daună | autopeloc.ro",
   description:
-    "Pregătim, verificăm și gestionăm dosarul de daună în locul tău. Asistență completă RCA și CASCO, verificare documente, negociere eficientă.",
+    "Pregătim, verificăm și gestionăm dosarul de daună în locul tău. Asistență completă RCA și CASCO, verificare documente, negociere eficientă. Servicii disponibile în toată România.",
   keywords: "consultanță dosar daună, asistență RCA CASCO, verificare documente daună, negociere asigurător",
+  openGraph: {
+    title: "Consultanță completă pentru dosarul tău de daună",
+    description:
+      "Pregătim, verificăm și gestionăm dosarul de daună în locul tău. Asistență completă RCA și CASCO, verificare documente, negociere eficientă.",
+    type: "website",
+    url: "https://autopeloc.ro/servicii/consultanta-dosar-dauna",
+    siteName: "autopeloc.ro",
+    locale: "ro_RO",
+    images: [
+      {
+        url: "/images/dashboard.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Consultanță completă pentru dosarul tău de daună",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Consultanță completă pentru dosarul tău de daună",
+    description:
+      "Pregătim, verificăm și gestionăm dosarul de daună în locul tău. Asistență completă RCA și CASCO.",
+    images: ["/images/dashboard.jpg"],
+  },
   alternates: {
     canonical: "https://autopeloc.ro/servicii/consultanta-dosar-dauna",
   },
 }
 
 export default function ConsultantaDosarDauna() {
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    serviceType: "Consultanță dosar daună",
+    provider: {
+      "@type": "Organization",
+      name: "autopeloc.ro",
+      url: "https://autopeloc.ro",
+    },
+    areaServed: {
+      "@type": "Country",
+      name: "România",
+    },
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "RON",
+      description: "Consultanță gratuită pentru dosarul de daună",
+    },
+    description:
+      "Pregătim, verificăm și gestionăm dosarul de daună în locul tău. Asistență completă RCA și CASCO, verificare documente, negociere eficientă.",
+  }
+
   return (
     <main className="min-h-screen transition-colors duration-300">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(serviceSchema),
+        }}
+      />
       <Header />
+      <div className="container mx-auto px-4 pt-24">
+        <Breadcrumbs
+          items={[
+            { name: "Acasă", url: "/" },
+            { name: "Servicii", url: "/servicii" },
+            { name: "Consultanță dosar daună", url: "/servicii/consultanta-dosar-dauna" },
+          ]}
+        />
+      </div>
 
       {/* Hero Section */}
-      <section className="relative pt-24 pb-8 md:pt-28 md:pb-12 overflow-hidden border-t border-teal/20 dark:border-teal/30">
+      <section className="relative pt-8 pb-8 md:pt-12 md:pb-12 overflow-hidden border-t border-teal/20 dark:border-teal/30">
         <div className="absolute inset-0 bg-gradient-to-b from-teal/5 via-background to-background" />
         <div className="absolute top-20 right-1/4 w-96 h-96 bg-teal/10 rounded-full blur-3xl" />
         <div className="absolute bottom-20 left-1/4 w-72 h-72 bg-cyan/10 rounded-full blur-3xl" />

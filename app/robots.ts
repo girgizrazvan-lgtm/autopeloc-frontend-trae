@@ -8,20 +8,24 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/admin", "/api/", "/management-rent-provider"],
+        disallow: ["/admin", "/admin/login", "/login", "/api/", "/management-rent-provider"],
       },
       {
         userAgent: "Googlebot",
         allow: "/",
-        disallow: ["/admin", "/api/", "/management-rent-provider"],
+        disallow: ["/admin", "/admin/login", "/login", "/api/", "/management-rent-provider"],
       },
       {
         userAgent: "Bingbot",
         allow: "/",
-        disallow: ["/admin", "/api/", "/management-rent-provider"],
+        disallow: ["/admin", "/admin/login", "/login", "/api/", "/management-rent-provider"],
       },
     ],
-    sitemap: `${baseUrl}/sitemap.xml`,
+    sitemap: [
+      `${baseUrl}/sitemap.xml`,
+      `${baseUrl}/sitemap-blog.xml`,
+      `${baseUrl}/sitemap-services.xml`,
+    ],
     host: baseUrl,
   }
 }

@@ -1,9 +1,15 @@
 import { NextResponse } from "next/server"
 import { put, list, del } from "@vercel/blob"
+import { requireAdmin } from "@/lib/admin-auth"
 
 // GET - List all website requests
 export async function GET() {
   try {
+    try {
+      await requireAdmin()
+    } catch (error: any) {
+      return NextResponse.json({ success: false, error: "Neautorizat" }, { status: 401 })
+    }
     const { blobs } = await list({
       prefix: "website-requests/",
     })
@@ -34,6 +40,11 @@ export async function GET() {
 // POST - Create new website request
 export async function POST(request: Request) {
   try {
+    try {
+      await requireAdmin()
+    } catch (error: any) {
+      return NextResponse.json({ success: false, error: "Neautorizat" }, { status: 401 })
+    }
     const body = await request.json()
     const id = `request-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
 
@@ -61,6 +72,11 @@ export async function POST(request: Request) {
 // DELETE - Delete a website request
 export async function DELETE(request: Request) {
   try {
+    try {
+      await requireAdmin()
+    } catch (error: any) {
+      return NextResponse.json({ success: false, error: "Neautorizat" }, { status: 401 })
+    }
     const { id } = await request.json()
     const pathname = `website-requests/${id}.json`
 
@@ -85,6 +101,11 @@ export async function DELETE(request: Request) {
 // PATCH - Update request status
 export async function PATCH(request: Request) {
   try {
+    try {
+      await requireAdmin()
+    } catch (error: any) {
+      return NextResponse.json({ success: false, error: "Neautorizat" }, { status: 401 })
+    }
     const { id, status } = await request.json()
     const pathname = `website-requests/${id}.json`
 

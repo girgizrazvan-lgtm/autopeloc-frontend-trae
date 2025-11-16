@@ -1,8 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -89,10 +86,14 @@ const nextConfig = {
     ]
   },
   compress: true,
-  swcMinify: true,
+  // Next.js 16: swcMinify is always enabled; remove deprecated option
   poweredByHeader: false,
   experimental: {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
+  },
+  // Silence workspace root inference warning in Vercel builds
+  turbopack: {
+    root: '.',
   },
 }
 

@@ -6,11 +6,30 @@ export const metadata: Metadata = {
   description:
     "Ghid complet despre dreptul la mașină de înlocuire în 2025. Află ce spune legislația, ce documente sunt necesare și cum poți beneficia de acest drept garantat de lege.",
   keywords: "mașină la schimb, drepturi păgubit, RCA, legislație 2025, mașină de înlocuire, despăgubiri accident",
+  authors: [{ name: "autopeloc.ro" }],
   openGraph: {
     title: "Mașina la schimb în 2025 – Drepturile păgubitului",
     description: "Ghid complet despre dreptul la mașină de înlocuire în 2025",
     type: "article",
     publishedTime: "2025-09-08T10:00:00Z",
+    modifiedTime: "2025-09-08T10:00:00Z",
+    authors: ["autopeloc.ro"],
+    section: "Legislație",
+    tags: ["mașină la schimb", "drepturi păgubit", "RCA", "legislație 2025"],
+    images: [
+      {
+        url: "/images/dashboard.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Mașina la schimb în 2025 – Drepturile păgubitului",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Mașina la schimb în 2025 – Drepturile păgubitului",
+    description: "Ghid complet despre dreptul la mașină de înlocuire în 2025",
+    images: ["/images/dashboard.jpg"],
   },
   alternates: {
     canonical: "https://autopeloc.ro/blog/masina-la-schimb-2025-drepturi-pagubit",

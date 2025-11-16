@@ -1,9 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { ChevronDown } from "lucide-react"
 
-const faqs = [
+const fallbackFaqs = [
   {
     question: "Pot alege un model anume sau doar clasa?",
     answer:
@@ -27,7 +27,49 @@ const faqs = [
 ]
 
 export function FAQ() {
+  const [faqs, setFaqs] = useState(fallbackFaqs)
   const [openIndex, setOpenIndex] = useState<number | null>(null)
+
+  // Load FAQs from API
+  useEffect(() => {
+    fetch("/api/faqs")
+      .then((res) => {
+        if (!res.ok) {
+          console.warn(`[Fleet FAQ] API returned ${res.status}, using fallback data`)
+          return []
+        }
+        return res.json()
+      })
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          // Filter FAQs that might be fleet-specific (could be improved with a category field)
+          const fleetFaqs = data
+            .filter((faq: any) => faq.isActive)
+            .slice(-4) // Take last 4 as they're likely fleet-specific
+          
+          if (fleetFaqs.length > 0) {
+            console.log(`[Fleet FAQ] Successfully loaded ${fleetFaqs.length} FAQs from database`)
+            setFaqs(
+              fleetFaqs.map((faq: any) => ({
+                question: faq.question,
+                answer: faq.answer,
+              }))
+            )
+          } else {
+            console.warn("[Fleet FAQ] No active FAQs found in database, using fallback data")
+          }
+        } else {
+          console.warn("[Fleet FAQ] No FAQs found in database, using fallback data")
+        }
+      })
+      .catch((error) => {
+        console.error("[Fleet FAQ] Error loading FAQs from API:", {
+          message: error?.message || "Unknown error",
+          name: error?.name,
+        })
+        console.warn("[Fleet FAQ] Falling back to static FAQ data")
+      })
+  }, [])
 
   const toggle = (index: number) => {
     setOpenIndex(openIndex === index ? null : index)

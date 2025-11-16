@@ -1,25 +1,82 @@
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { Breadcrumbs } from "@/components/breadcrumbs"
 import type { Metadata } from "next"
 import { CheckCircle2, Phone } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "Expertize tehnice auto și reconstituire accidente | autopeloc.ro",
   description:
-    "Evaluări autorizate pentru daune auto, epave și accidente în parteneriat cu Careval. Rapoarte oficiale recunoscute legal și acceptate de asigurători.",
+    "Evaluări autorizate pentru daune auto, epave și accidente în parteneriat cu Careval. Rapoarte oficiale recunoscute legal și acceptate de asigurători. Servicii disponibile în toată România.",
   keywords: "expertize tehnice auto, reconstituire accidente, evaluare daune, expert tehnic autorizat, Careval",
+  openGraph: {
+    title: "Expertize tehnice auto și reconstituire accidente",
+    description:
+      "Evaluări autorizate pentru daune auto, epave și accidente în parteneriat cu Careval. Rapoarte oficiale recunoscute legal și acceptate de asigurători.",
+    type: "website",
+    url: "https://autopeloc.ro/servicii/expertize-daune-accidente",
+    siteName: "autopeloc.ro",
+    locale: "ro_RO",
+    images: [
+      {
+        url: "/images/dashboard.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Expertize tehnice auto și reconstituire accidente",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Expertize tehnice auto și reconstituire accidente",
+    description:
+      "Evaluări autorizate pentru daune auto, epave și accidente în parteneriat cu Careval. Rapoarte oficiale recunoscute legal.",
+    images: ["/images/dashboard.jpg"],
+  },
   alternates: {
     canonical: "https://autopeloc.ro/servicii/expertize-daune-accidente",
   },
 }
 
 export default function ExpertizeDauneAccidente() {
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    serviceType: "Expertize tehnice auto și reconstituire accidente",
+    provider: {
+      "@type": "Organization",
+      name: "autopeloc.ro",
+      url: "https://autopeloc.ro",
+    },
+    areaServed: {
+      "@type": "Country",
+      name: "România",
+    },
+    description:
+      "Evaluări autorizate pentru daune auto, epave și accidente în parteneriat cu Careval. Rapoarte oficiale recunoscute legal și acceptate de asigurători.",
+  }
+
   return (
     <main className="min-h-screen transition-colors duration-300">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(serviceSchema),
+        }}
+      />
       <Header />
+      <div className="container mx-auto px-4 pt-24">
+        <Breadcrumbs
+          items={[
+            { name: "Acasă", url: "/" },
+            { name: "Servicii", url: "/servicii" },
+            { name: "Expertize daune accidente", url: "/servicii/expertize-daune-accidente" },
+          ]}
+        />
+      </div>
 
       {/* Hero Section */}
-      <section className="relative pt-24 pb-8 md:pt-28 md:pb-12 overflow-hidden border-t border-teal/20 dark:border-teal/30">
+      <section className="relative pt-8 pb-8 md:pt-12 md:pb-12 overflow-hidden border-t border-teal/20 dark:border-teal/30">
         <div className="absolute inset-0 bg-gradient-to-b from-teal/5 via-background to-background" />
         <div className="absolute top-20 right-1/4 w-96 h-96 bg-teal/10 rounded-full blur-3xl" />
         <div className="absolute bottom-20 left-1/4 w-72 h-72 bg-cyan/10 rounded-full blur-3xl" />

@@ -1,17 +1,37 @@
 import { BlogLayout } from "@/components/blog-layout"
 
-export const metadata = {
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
   title: "Practici neetice în reparațiile auto pe RCA: ce trebuie să știe păgubitții în 2025 | autopeloc.ro",
   description:
     "Descoperă practicile neetice în reparațiile auto pe RCA și cum să te protejezi. Ghid complet pentru păgubiți în 2025 cu sfaturi practice și recomandări legale.",
   keywords:
     "practici neetice reparatii auto, RCA 2025, devize umflate, piese calitate inferioara, service auto neserios, drepturi pagubit, protectie consumator auto",
+  authors: [{ name: "autopeloc.ro" }],
   openGraph: {
     title: "Practici neetice în reparațiile auto pe RCA: ce trebuie să știe păgubitții în 2025",
     description: "Descoperă practicile neetice în reparațiile auto pe RCA și cum să te protejezi.",
     type: "article",
     publishedTime: "2025-10-06T10:00:00Z",
+    modifiedTime: "2025-10-06T10:00:00Z",
     authors: ["autopeloc.ro"],
+    section: "Protecție Consumator",
+    tags: ["practici neetice reparatii auto", "RCA 2025", "devize umflate", "service auto neserios"],
+    images: [
+      {
+        url: "/images/dashboard.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Practici neetice în reparațiile auto pe RCA",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Practici neetice în reparațiile auto pe RCA: ce trebuie să știe păgubitții în 2025",
+    description: "Descoperă practicile neetice în reparațiile auto pe RCA și cum să te protejezi.",
+    images: ["/images/dashboard.jpg"],
   },
   alternates: {
     canonical: "https://autopeloc.ro/blog/practici-neetice-reparatii-rca-2025",

@@ -1,11 +1,14 @@
 import { BlogLayout } from "@/components/blog-layout"
 
-export const metadata = {
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
   title: "Ce se întâmplă dacă reparația mașinii după accident nu este conformă? | autopeloc.ro",
   description:
     "Ghid complet despre drepturile tale când reparația mașinii după accident nu este conformă. Află cum identifici problemele, ce pași să urmezi și cum să îți protejezi drepturile în 2025.",
   keywords:
     "reparație neconformă, defecte după reparație, drepturi păgubit, service auto, ANPC, garanție reparații, reclamație service",
+  authors: [{ name: "autopeloc.ro" }],
   openGraph: {
     title: "Ce se întâmplă dacă reparația mașinii după accident nu este conformă?",
     description:
@@ -13,8 +16,24 @@ export const metadata = {
     type: "article",
     url: "https://autopeloc.ro/blog/reparatie-neconforma-dupa-accident",
     publishedTime: "2025-09-24T10:00:00+03:00",
+    modifiedTime: "2025-09-24T10:00:00+03:00",
     authors: ["autopeloc.ro"],
     section: "Drepturi Consumator",
+    tags: ["reparație neconformă", "defecte după reparație", "drepturi păgubit", "service auto"],
+    images: [
+      {
+        url: "/images/dashboard.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Ce se întâmplă dacă reparația mașinii după accident nu este conformă?",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Ce se întâmplă dacă reparația mașinii după accident nu este conformă?",
+    description: "Ghid complet despre drepturile tale când reparația mașinii după accident nu este conformă.",
+    images: ["/images/dashboard.jpg"],
   },
   alternates: {
     canonical: "https://autopeloc.ro/blog/reparatie-neconforma-dupa-accident",

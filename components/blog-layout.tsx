@@ -72,9 +72,82 @@ export function BlogLayout({
   children,
   relatedArticles = [],
 }: BlogLayoutProps) {
+  const baseUrl = "https://autopeloc.ro"
+  const fullUrl = `${baseUrl}${url}`
+  const ogImage = `${baseUrl}/images/dashboard.jpg`
+
+  // Article Schema for SEO
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: title,
+    description: description,
+    image: ogImage,
+    datePublished: date,
+    dateModified: date,
+    author: {
+      "@type": "Organization",
+      name: "autopeloc.ro",
+      url: baseUrl,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "autopeloc.ro",
+      logo: {
+        "@type": "ImageObject",
+        url: `${baseUrl}/favicon.svg`,
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": fullUrl,
+    },
+    articleSection: category,
+  }
+
+  // Breadcrumb Schema
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Acasă",
+        item: baseUrl,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Blog",
+        item: `${baseUrl}/blog`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: title,
+        item: fullUrl,
+      },
+    ],
+  }
+
   return (
     <main className="min-h-screen bg-background">
       <Header />
+
+      {/* Structured Data for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(articleSchema),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbSchema),
+        }}
+      />
 
       <article className="py-16 md:py-24">
         <div className="container mx-auto px-4 max-w-4xl">

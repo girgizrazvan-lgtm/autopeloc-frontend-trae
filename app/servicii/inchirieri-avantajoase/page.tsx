@@ -1,25 +1,82 @@
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { Breadcrumbs } from "@/components/breadcrumbs"
 import type { Metadata } from "next"
 import { CheckCircle2, Phone } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "Închirieri auto avantajoase – exclusiv pentru membri #peloc | autopeloc.ro",
   description:
-    "Clienții AutoPeLoc beneficiază de tarife preferențiale la închirieri auto în toată țara. Fără depozit, discounturi pentru weekend și vacanțe.",
+    "Clienții AutoPeLoc beneficiază de tarife preferențiale la închirieri auto în toată țara. Fără depozit, discounturi pentru weekend și vacanțe. Livrare direct la adresă disponibilă.",
   keywords: "închirieri auto avantajoase, tarife preferențiale, fără depozit, discounturi închirieri, membri peloc",
+  openGraph: {
+    title: "Închirieri auto avantajoase – exclusiv pentru membri #peloc",
+    description:
+      "Clienții AutoPeLoc beneficiază de tarife preferențiale la închirieri auto în toată țara. Fără depozit, discounturi pentru weekend și vacanțe.",
+    type: "website",
+    url: "https://autopeloc.ro/servicii/inchirieri-avantajoase",
+    siteName: "autopeloc.ro",
+    locale: "ro_RO",
+    images: [
+      {
+        url: "/images/dashboard.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Închirieri auto avantajoase – exclusiv pentru membri #peloc",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Închirieri auto avantajoase – exclusiv pentru membri #peloc",
+    description:
+      "Clienții AutoPeLoc beneficiază de tarife preferențiale la închirieri auto în toată țara. Fără depozit, discounturi pentru weekend și vacanțe.",
+    images: ["/images/dashboard.jpg"],
+  },
   alternates: {
     canonical: "https://autopeloc.ro/servicii/inchirieri-avantajoase",
   },
 }
 
 export default function InchirieriAvantajoase() {
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    serviceType: "Închirieri auto avantajoase",
+    provider: {
+      "@type": "Organization",
+      name: "autopeloc.ro",
+      url: "https://autopeloc.ro",
+    },
+    areaServed: {
+      "@type": "Country",
+      name: "România",
+    },
+    description:
+      "Clienții AutoPeLoc beneficiază de tarife preferențiale la închirieri auto în toată țara. Fără depozit, discounturi pentru weekend și vacanțe.",
+  }
+
   return (
     <main className="min-h-screen transition-colors duration-300">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(serviceSchema),
+        }}
+      />
       <Header />
+      <div className="container mx-auto px-4 pt-24">
+        <Breadcrumbs
+          items={[
+            { name: "Acasă", url: "/" },
+            { name: "Servicii", url: "/servicii" },
+            { name: "Închirieri avantajoase", url: "/servicii/inchirieri-avantajoase" },
+          ]}
+        />
+      </div>
 
       {/* Hero Section */}
-      <section className="relative pt-24 pb-8 md:pt-28 md:pb-12 overflow-hidden border-t border-teal/20 dark:border-teal/30">
+      <section className="relative pt-8 pb-8 md:pt-12 md:pb-12 overflow-hidden border-t border-teal/20 dark:border-teal/30">
         <div className="absolute inset-0 bg-gradient-to-b from-teal/5 via-background to-background" />
         <div className="absolute top-20 right-1/4 w-96 h-96 bg-teal/10 rounded-full blur-3xl" />
         <div className="absolute bottom-20 left-1/4 w-72 h-72 bg-cyan/10 rounded-full blur-3xl" />

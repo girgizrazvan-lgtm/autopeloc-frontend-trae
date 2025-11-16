@@ -1,18 +1,38 @@
 import { BlogLayout } from "@/components/blog-layout"
 
-export const metadata = {
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
   title: "Noile tendințe în sistemul de mașină la schimb pentru accidente în 2025 | autopeloc.ro",
   description:
     "Descoperă cum digitalizarea și platformele online transformă procesul de obținere a mașinii la schimb în 2025. Află despre noile tendințe și ce te așteaptă în 2026.",
   keywords:
     "mașină la schimb 2025, tendințe auto, platforme digitale, închirieri auto, asigurări RCA, digitalizare service auto",
+  authors: [{ name: "autopeloc.ro" }],
   openGraph: {
     title: "Noile tendințe în sistemul de mașină la schimb pentru accidente în 2025",
     description:
       "Descoperă cum digitalizarea și platformele online transformă procesul de obținere a mașinii la schimb în 2025.",
     type: "article",
     publishedTime: "2025-09-16T09:00:00Z",
+    modifiedTime: "2025-09-16T09:00:00Z",
     authors: ["autopeloc.ro"],
+    section: "Tendințe",
+    tags: ["mașină la schimb 2025", "tendințe auto", "platforme digitale", "digitalizare service auto"],
+    images: [
+      {
+        url: "/images/dashboard.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Noile tendințe în sistemul de mașină la schimb pentru accidente în 2025",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Noile tendințe în sistemul de mașină la schimb pentru accidente în 2025",
+    description: "Descoperă cum digitalizarea și platformele online transformă procesul de obținere a mașinii la schimb în 2025.",
+    images: ["/images/dashboard.jpg"],
   },
   alternates: {
     canonical: "https://autopeloc.ro/blog/tendinte-masina-la-schimb-2025",

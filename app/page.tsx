@@ -8,6 +8,7 @@ import { Footer } from "@/components/footer"
 import { WhyAutoPeLocSection } from "@/components/why-autopeloc-section"
 import { TestimonialsSection } from "@/components/testimonials-section"
 import { SectionDivider } from "@/components/section-divider"
+import { Breadcrumbs } from "@/components/breadcrumbs"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -48,6 +49,7 @@ export default function Home() {
   return (
     <main className="min-h-screen transition-colors duration-300">
       <Header />
+      <Breadcrumbs items={[{ name: "Acasă", url: "/" }]} />
       <HeroSection />
       <SectionDivider />
       <SimpleStepsSection />

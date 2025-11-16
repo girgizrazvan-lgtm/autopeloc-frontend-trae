@@ -1,18 +1,38 @@
 import { BlogLayout } from "@/components/blog-layout"
 
-export const metadata = {
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
   title: "Provocări reale la obținerea mașinii la schimb în 2025 | autopeloc.ro",
   description:
     "Dificultățile practice în obținerea mașinii la schimb în 2025: flote insuficiente, întârzieri birocratice și costuri ascunse. Ghid complet pentru păgubiți cu soluții concrete.",
   keywords:
     "masina la schimb probleme, provocari masina inlocuire, flota insuficienta, intarzieri birocratice, costuri ascunse inchiriere, masina schimb 2025, dificultati masina inlocuire",
+  authors: [{ name: "autopeloc.ro" }],
   openGraph: {
     title: "Provocări reale la obținerea mașinii la schimb în 2025",
     description:
       "Dificultățile practice în obținerea mașinii la schimb în 2025: flote insuficiente, întârzieri birocratice și costuri ascunse.",
     type: "article",
     publishedTime: "2025-09-12T10:00:00Z",
+    modifiedTime: "2025-09-12T10:00:00Z",
     authors: ["autopeloc.ro"],
+    section: "Ghid Practic",
+    tags: ["masina la schimb probleme", "provocari masina inlocuire", "flota insuficienta", "intarzieri birocratice"],
+    images: [
+      {
+        url: "/images/dashboard.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Provocări reale la obținerea mașinii la schimb în 2025",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Provocări reale la obținerea mașinii la schimb în 2025",
+    description: "Dificultățile practice în obținerea mașinii la schimb în 2025: flote insuficiente, întârzieri birocratice și costuri ascunse.",
+    images: ["/images/dashboard.jpg"],
   },
   alternates: {
     canonical: "https://autopeloc.ro/blog/provocari-masina-la-schimb-2025",

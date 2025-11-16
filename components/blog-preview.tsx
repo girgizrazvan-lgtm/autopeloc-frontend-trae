@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { useRef } from "react"
+import { useRef, useState, useEffect } from "react"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -46,7 +46,7 @@ const ChevronRight = ({ className }: { className?: string }) => (
   </svg>
 )
 
-const blogPosts = [
+const fallbackBlogPosts = [
   {
     slug: "masina-la-schimb-2025-drepturi-pagubit",
     title: "Mașina la schimb în 2025 – Drepturile păgubitului, explicate pas cu pas",
@@ -129,8 +129,72 @@ const blogPosts = [
   },
 ]
 
+// Helper function to get gradient color based on category
+const getCategoryColor = (category: string): string => {
+  const colors: Record<string, string> = {
+    Legislație: "from-teal-500 to-cyan-500",
+    "Ghid Practic": "from-blue-500 to-teal-500",
+    Tendințe: "from-cyan-500 to-blue-500",
+    "Ghid Service": "from-teal-600 to-cyan-600",
+    "Drepturi Consumator": "from-orange-500 to-red-500",
+    "Protecție Consumator": "from-red-500 to-orange-500",
+    Investigație: "from-red-500 to-orange-500",
+  }
+  return colors[category] || "from-teal-500 to-cyan-500"
+}
+
 export function BlogPreview() {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const [blogPosts, setBlogPosts] = useState(fallbackBlogPosts)
+
+  // Load blog posts from API
+  useEffect(() => {
+    fetch("/api/blog")
+      .then((res) => {
+        if (!res.ok) {
+          console.warn(`[BlogPreview] API returned ${res.status}, using fallback data`)
+          return []
+        }
+        return res.json()
+      })
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          // Take latest 8 published posts
+          const latestPosts = data
+            .filter((post: any) => post.isPublished)
+            .slice(0, 8)
+            .map((post: any) => ({
+              slug: post.slug,
+              title: post.title,
+              excerpt: post.excerpt || post.description,
+              date: new Date(post.publishedAt).toLocaleDateString("ro-RO", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              }),
+              category: post.category,
+              readTime: post.readTime || "5 min",
+              color: getCategoryColor(post.category),
+            }))
+
+          if (latestPosts.length > 0) {
+            console.log(`[BlogPreview] Successfully loaded ${latestPosts.length} blog posts from database`)
+            setBlogPosts(latestPosts)
+          } else {
+            console.warn("[BlogPreview] No published posts found in database, using fallback data")
+          }
+        } else {
+          console.warn("[BlogPreview] No blog posts found in database, using fallback data")
+        }
+      })
+      .catch((error) => {
+        console.error("[BlogPreview] Error loading blog posts from API:", {
+          message: error?.message || "Unknown error",
+          name: error?.name,
+        })
+        console.warn("[BlogPreview] Falling back to static blog posts")
+      })
+  }, [])
 
   const scrollLeft = () => {
     if (scrollContainerRef.current) {

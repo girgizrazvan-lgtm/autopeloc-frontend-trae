@@ -1,6 +1,8 @@
 import { BlogLayout } from "@/components/blog-layout"
 
-export const metadata = {
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
   title: "Măsuri propuse de ASF pentru reducerea fraudelor în 2025 | autopeloc.ro",
   description:
     "Descoperă cele 12 măsuri concrete implementate de ASF, ANAF și ANPC în 2025 pentru combaterea fraudelor în sistemul RCA și reducerea prețurilor nejustificate.",
@@ -13,12 +15,30 @@ export const metadata = {
     "transparență asigurări",
     "reforme RCA România",
   ],
+  authors: [{ name: "autopeloc.ro" }],
   openGraph: {
     title: "Măsuri propuse de ASF pentru reducerea fraudelor în 2025",
     description: "Cele 12 măsuri concrete implementate pentru combaterea fraudelor în sistemul RCA.",
     type: "article",
     publishedTime: "2025-10-08T09:00:00Z",
+    modifiedTime: "2025-10-08T09:00:00Z",
     authors: ["autopeloc.ro"],
+    section: "Legislație",
+    tags: ["măsuri ASF 2025", "reducere fraude RCA", "sistem bonus-malus", "digitalizare RCA"],
+    images: [
+      {
+        url: "/images/dashboard.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Măsuri propuse de ASF pentru reducerea fraudelor în 2025",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Măsuri propuse de ASF pentru reducerea fraudelor în 2025",
+    description: "Cele 12 măsuri concrete implementate pentru combaterea fraudelor în sistemul RCA.",
+    images: ["/images/dashboard.jpg"],
   },
   alternates: {
     canonical: "https://autopeloc.ro/blog/masuri-asf-reducere-fraude-2025",

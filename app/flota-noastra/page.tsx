@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { Breadcrumbs } from "@/components/breadcrumbs"
 import { RomaniaCoverageMap } from "@/components/romania-coverage-map"
 import { HeroSection } from "./_components/hero-section"
 import { QuickFilters } from "./_components/quick-filters"
@@ -25,6 +26,15 @@ export default function FlotaNoastraPage() {
   return (
     <>
       <link rel="canonical" href="https://autopeloc.ro/flota-noastra" />
+      <Header />
+      <div className="container mx-auto px-4 pt-24">
+        <Breadcrumbs
+          items={[
+            { name: "Acasă", url: "/" },
+            { name: "Flota noastră", url: "/flota-noastra" },
+          ]}
+        />
+      </div>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -60,6 +70,16 @@ export default function FlotaNoastraPage() {
               fuelType: "Benzină",
               vehicleSeatingCapacity: 5,
               vehicleTransmission: "Manual",
+              numberOfDoors: 5,
+              itemCondition: "https://schema.org/NewCondition",
+              priceSpecification: {
+                "@type": "PriceSpecification",
+                price: "0",
+                priceCurrency: "RON",
+                valueAddedTaxIncluded: true,
+              },
+              availability: "https://schema.org/InStock",
+              availabilityStarts: new Date().toISOString(),
             },
             {
               "@context": "https://schema.org",
@@ -69,6 +89,16 @@ export default function FlotaNoastraPage() {
               fuelType: "Benzină",
               vehicleSeatingCapacity: 5,
               vehicleTransmission: "Manual",
+              numberOfDoors: 5,
+              itemCondition: "https://schema.org/NewCondition",
+              priceSpecification: {
+                "@type": "PriceSpecification",
+                price: "0",
+                priceCurrency: "RON",
+                valueAddedTaxIncluded: true,
+              },
+              availability: "https://schema.org/InStock",
+              availabilityStarts: new Date().toISOString(),
             },
             {
               "@context": "https://schema.org",
@@ -78,11 +108,20 @@ export default function FlotaNoastraPage() {
               fuelType: "Benzină",
               vehicleSeatingCapacity: 5,
               vehicleTransmission: "Automatic",
+              numberOfDoors: 5,
+              itemCondition: "https://schema.org/NewCondition",
+              priceSpecification: {
+                "@type": "PriceSpecification",
+                price: "0",
+                priceCurrency: "RON",
+                valueAddedTaxIncluded: true,
+              },
+              availability: "https://schema.org/InStock",
+              availabilityStarts: new Date().toISOString(),
             },
           ]),
         }}
       />
-      <Header />
       <main className="min-h-screen transition-colors duration-300">
         <HeroSection />
         <QuickFilters />

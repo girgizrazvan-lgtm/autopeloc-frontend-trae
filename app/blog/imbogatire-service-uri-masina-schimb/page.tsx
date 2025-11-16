@@ -7,13 +7,31 @@ export const metadata: Metadata = {
     "Investigație despre abuzurile sistemice în piața mașinilor la schimb: cazuri concrete, mecanisme de îmbogățire și impactul asupra prețurilor RCA în România.",
   keywords:
     "service auto abuzuri, mașină la schimb fraude, RCA prețuri umflate, devize exagerate, intermediari daune, Norma 20/2017, ACADA",
+  authors: [{ name: "autopeloc.ro" }],
   openGraph: {
     title: "Cum s-au îmbogățit service-urile nejust de pe urma legilor cu mașina la schimb",
     description:
       "Investigație despre abuzurile sistemice în piața mașinilor la schimb: cazuri concrete și mecanisme de îmbogățire.",
     type: "article",
     publishedTime: "2025-10-07T09:00:00Z",
+    modifiedTime: "2025-10-07T09:00:00Z",
     authors: ["autopeloc.ro"],
+    section: "Investigație",
+    tags: ["service auto abuzuri", "mașină la schimb fraude", "RCA prețuri umflate", "devize exagerate"],
+    images: [
+      {
+        url: "/images/dashboard.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Cum s-au îmbogățit service-urile nejust de pe urma legilor cu mașina la schimb",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Cum s-au îmbogățit service-urile nejust de pe urma legilor cu mașina la schimb",
+    description: "Investigație despre abuzurile sistemice în piața mașinilor la schimb: cazuri concrete și mecanisme de îmbogățire.",
+    images: ["/images/dashboard.jpg"],
   },
   alternates: {
     canonical: "https://autopeloc.ro/blog/imbogatire-service-uri-masina-schimb",

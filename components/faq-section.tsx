@@ -1,9 +1,15 @@
 "use client"
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { useEffect, useState } from "react"
+
+interface FAQ {
+  question: string
+  answer: string | React.ReactNode
+}
 
 export function FAQSection() {
-  const faqs = [
+  const [faqs, setFaqs] = useState<FAQ[]>([
     {
       question: "Ce documente sunt necesare pentru a primi vehiculul de înlocuire?",
       answer: (
@@ -95,10 +101,65 @@ export function FAQSection() {
       answer:
         "Serviciul de mașină de înlocuire este reglementat prin Norma nr. 18/2022, actualizată prin Hotărârea de Guvern nr. 1.326 din 28 decembrie 2023. Articolul 3 din această normă detaliază condițiile de acordare a vehiculului de înlocuire în cazul lipsei de folosință.",
     },
-  ]
+  ])
+
+  // Load FAQs from API
+  useEffect(() => {
+    fetch("/api/faqs")
+      .then((res) => {
+        if (!res.ok) {
+          console.warn(`[FAQ] API returned ${res.status}, using fallback data`)
+          return []
+        }
+        return res.json()
+      })
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          console.log(`[FAQ] Successfully loaded ${data.length} FAQs from database`)
+          setFaqs(
+            data.map((faq: any) => ({
+              question: faq.question,
+              answer: faq.answer,
+            }))
+          )
+        } else {
+          console.warn("[FAQ] No FAQs found in database, using fallback data")
+        }
+      })
+      .catch((error) => {
+        console.error("[FAQ] Error loading FAQs from API:", {
+          message: error?.message || "Unknown error",
+          name: error?.name,
+        })
+        console.warn("[FAQ] Falling back to static FAQ data")
+        // Keep default FAQs if API fails
+      })
+  }, [])
+
+  // FAQPage Schema for SEO
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: typeof faq.answer === "string" ? faq.answer : faq.question, // Fallback for React components
+      },
+    })),
+  }
 
   return (
     <section className="py-16 md:py-24 bg-background">
+      {/* FAQPage Schema for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqSchema),
+        }}
+      />
+
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto">
           <div className="mb-12 text-center">

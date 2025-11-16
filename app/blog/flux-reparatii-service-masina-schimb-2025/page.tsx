@@ -7,13 +7,31 @@ export const metadata: Metadata = {
     "Înțelege procesul complet de reparații și cum să obții mașina la schimb în 2025. Ghid detaliat despre deschiderea dosarului de daună, predarea mașinii în service și calcularea perioadei de înlocuire.",
   keywords:
     "flux reparatii service, masina la schimb 2025, dosar dauna, constatare avarii, deviz reparatie, manopera service, piese schimb, clasa masina inlocuire",
+  authors: [{ name: "autopeloc.ro" }],
   openGraph: {
     title: "Fluxul reparațiilor în service pentru mașina la schimb: pașii critici pentru 2025",
     description:
       "Ghid complet despre procesul de reparații și obținerea mașinii la schimb în 2025. Află pașii esențiali și situațiile de risc.",
     type: "article",
     publishedTime: "2025-10-04T09:00:00Z",
+    modifiedTime: "2025-10-04T09:00:00Z",
     authors: ["autopeloc.ro"],
+    section: "Ghid Service",
+    tags: ["flux reparatii service", "masina la schimb 2025", "dosar dauna", "deviz reparatie"],
+    images: [
+      {
+        url: "/images/dashboard.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Fluxul reparațiilor în service pentru mașina la schimb",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Fluxul reparațiilor în service pentru mașina la schimb: pașii critici pentru 2025",
+    description: "Ghid complet despre procesul de reparații și obținerea mașinii la schimb în 2025.",
+    images: ["/images/dashboard.jpg"],
   },
   alternates: {
     canonical: "https://autopeloc.ro/blog/flux-reparatii-service-masina-schimb-2025",

@@ -1,25 +1,49 @@
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { Breadcrumbs } from "@/components/breadcrumbs"
 import Link from "next/link"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Calendar, ArrowRight } from "lucide-react"
 import type { Metadata } from "next"
+import { prisma } from "@/lib/db"
 
 export const metadata: Metadata = {
   title: "Blog - Informații utile despre mașini de înlocuire | autopeloc.ro",
   description:
-    "Articole despre drepturile șoferilor, legislație RCA, mașini de înlocuire și tot ce trebuie să știi despre despăgubiri în urma accidentelor rutiere.",
+    "Articole despre drepturile șoferilor, legislație RCA, mașini de înlocuire și tot ce trebuie să știi despre despăgubiri în urma accidentelor rutiere. Ghiduri practice și actualizări legislative 2025.",
+  keywords: "blog mașină schimb, articole RCA, legislație auto, drepturi șoferi, ghiduri accidente auto",
   openGraph: {
-    title: "Blog - Informații utile | autopeloc.ro",
-    description: "Articole despre drepturile șoferilor și legislație RCA",
+    title: "Blog - Informații utile despre mașini de înlocuire | autopeloc.ro",
+    description:
+      "Articole despre drepturile șoferilor, legislație RCA, mașini de înlocuire și tot ce trebuie să știi despre despăgubiri în urma accidentelor rutiere.",
+    type: "website",
+    url: "https://autopeloc.ro/blog",
+    siteName: "autopeloc.ro",
+    locale: "ro_RO",
+    images: [
+      {
+        url: "/images/dashboard.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Blog - Informații utile despre mașini de înlocuire",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Blog - Informații utile despre mașini de înlocuire | autopeloc.ro",
+    description:
+      "Articole despre drepturile șoferilor, legislație RCA, mașini de înlocuire și tot ce trebuie să știi despre despăgubiri.",
+    images: ["/images/dashboard.jpg"],
   },
   alternates: {
     canonical: "https://autopeloc.ro/blog",
   },
 }
 
-const blogPosts = [
+// Fallback blog posts if database is not available
+const fallbackBlogPosts = [
   {
     slug: "masina-la-schimb-2025-drepturi-pagubit",
     title: "Mașina la schimb în 2025 – Drepturile păgubitului, explicate pas cu pas",
@@ -94,12 +118,58 @@ const blogPosts = [
   },
 ]
 
-export default function BlogPage() {
+async function getBlogPosts() {
+  try {
+    const posts = await prisma.blogPost.findMany({
+      where: { isPublished: true },
+      orderBy: { publishedAt: "desc" },
+    })
+    
+    if (posts.length === 0) {
+      console.warn("[Blog] No published posts found in database, using fallback data")
+      return fallbackBlogPosts
+    }
+    
+    console.log(`[Blog] Successfully loaded ${posts.length} blog posts from database`)
+    return posts.map((post: any) => ({
+      slug: post.slug,
+      title: post.title,
+      excerpt: post.excerpt || post.description,
+      date: new Date(post.publishedAt).toLocaleDateString("ro-RO", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }),
+      category: post.category,
+      readTime: post.readTime || "5 min",
+    }))
+  } catch (error: any) {
+    console.error("[Blog] Error fetching blog posts from database:", {
+      message: error?.message || "Unknown error",
+      code: error?.code,
+      name: error?.name,
+    })
+    console.warn("[Blog] Falling back to static blog posts")
+    return fallbackBlogPosts
+  }
+}
+
+export default async function BlogPage() {
+  const blogPosts = await getBlogPosts()
+
   return (
     <main className="min-h-screen">
       <Header />
+      <div className="container mx-auto px-4 pt-24">
+        <Breadcrumbs
+          items={[
+            { name: "Acasă", url: "/" },
+            { name: "Blog", url: "/blog" },
+          ]}
+        />
+      </div>
 
-      <section className="py-16 md:py-24 bg-background">
+      <section className="py-8 md:py-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <Badge variant="outline" className="mb-4 border-teal-600 text-teal-600">
@@ -112,7 +182,7 @@ export default function BlogPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {blogPosts.map((post) => (
+            {blogPosts.map((post: any) => (
               <Link key={post.slug} href={`/blog/${post.slug}`}>
                 <Card className="h-full overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group border-border/50">
                   {/* Gradient top section */}

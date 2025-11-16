@@ -1,8 +1,14 @@
 import { NextResponse } from "next/server"
 import { del } from "@vercel/blob"
+import { requireAdmin } from "@/lib/admin-auth"
 
 export async function POST(request: Request) {
   try {
+    try {
+      await requireAdmin()
+    } catch (error: any) {
+      return NextResponse.json({ error: "Neautorizat" }, { status: 401 })
+    }
     const { url } = await request.json()
     await del(url)
     return NextResponse.json({ success: true })

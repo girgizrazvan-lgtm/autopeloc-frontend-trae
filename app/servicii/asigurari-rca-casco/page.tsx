@@ -1,25 +1,82 @@
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { Breadcrumbs } from "@/components/breadcrumbs"
 import type { Metadata } from "next"
 import { CheckCircle2, Phone } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "Asigurări RCA și CASCO – simple, rapide, corecte | autopeloc.ro",
   description:
-    "Colaborăm cu asigurători verificați pentru a-ți oferi cele mai potrivite polițe RCA și CASCO. Oferte multiple în câteva minute, consultanță gratuită.",
+    "Colaborăm cu asigurători verificați pentru a-ți oferi cele mai potrivite polițe RCA și CASCO. Oferte multiple în câteva minute, consultanță gratuită. Reduceri pentru membri #peloc.",
   keywords: "asigurări RCA, asigurări CASCO, polițe auto, oferte asigurări, consultanță asigurări",
+  openGraph: {
+    title: "Asigurări RCA și CASCO – simple, rapide, corecte",
+    description:
+      "Colaborăm cu asigurători verificați pentru a-ți oferi cele mai potrivite polițe RCA și CASCO. Oferte multiple în câteva minute, consultanță gratuită.",
+    type: "website",
+    url: "https://autopeloc.ro/servicii/asigurari-rca-casco",
+    siteName: "autopeloc.ro",
+    locale: "ro_RO",
+    images: [
+      {
+        url: "/images/dashboard.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Asigurări RCA și CASCO – simple, rapide, corecte",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Asigurări RCA și CASCO – simple, rapide, corecte",
+    description:
+      "Colaborăm cu asigurători verificați pentru a-ți oferi cele mai potrivite polițe RCA și CASCO. Oferte multiple în câteva minute.",
+    images: ["/images/dashboard.jpg"],
+  },
   alternates: {
     canonical: "https://autopeloc.ro/servicii/asigurari-rca-casco",
   },
 }
 
 export default function AsigurariRCACASCO() {
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    serviceType: "Asigurări RCA și CASCO",
+    provider: {
+      "@type": "Organization",
+      name: "autopeloc.ro",
+      url: "https://autopeloc.ro",
+    },
+    areaServed: {
+      "@type": "Country",
+      name: "România",
+    },
+    description:
+      "Colaborăm cu asigurători verificați pentru a-ți oferi cele mai potrivite polițe RCA și CASCO. Oferte multiple în câteva minute, consultanță gratuită.",
+  }
+
   return (
     <main className="min-h-screen transition-colors duration-300">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(serviceSchema),
+        }}
+      />
       <Header />
+      <div className="container mx-auto px-4 pt-24">
+        <Breadcrumbs
+          items={[
+            { name: "Acasă", url: "/" },
+            { name: "Servicii", url: "/servicii" },
+            { name: "Asigurări RCA și CASCO", url: "/servicii/asigurari-rca-casco" },
+          ]}
+        />
+      </div>
 
       {/* Hero Section */}
-      <section className="relative pt-24 pb-8 md:pt-28 md:pb-12 overflow-hidden border-t border-teal/20 dark:border-teal/30">
+      <section className="relative pt-8 pb-8 md:pt-12 md:pb-12 overflow-hidden border-t border-teal/20 dark:border-teal/30">
         <div className="absolute inset-0 bg-gradient-to-b from-teal/5 via-background to-background" />
         <div className="absolute top-20 right-1/4 w-96 h-96 bg-teal/10 rounded-full blur-3xl" />
         <div className="absolute bottom-20 left-1/4 w-72 h-72 bg-cyan/10 rounded-full blur-3xl" />

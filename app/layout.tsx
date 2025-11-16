@@ -7,6 +7,7 @@ import { Suspense } from "react"
 import { CookieBanner } from "@/components/cookie-banner"
 import { MobileActionButtons } from "@/components/mobile-action-buttons"
 import { ScrollToTop } from "@/components/scroll-to-top"
+import { VisitorTracker } from "@/components/visitor-tracker"
 import Script from "next/script"
 
 const inter = Inter({
@@ -188,6 +189,7 @@ export default function RootLayout({
         <Suspense fallback={null}>
           <ThemeProvider defaultTheme="light" storageKey="rca-theme">
             <ScrollToTop />
+            <VisitorTracker />
             {children}
             <CookieBanner />
             <MobileActionButtons />
