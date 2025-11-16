@@ -93,7 +93,7 @@ const nextConfig = {
   },
   // Silence workspace root inference warning in Vercel builds
   turbopack: {
-    root: '.',
+    root: process.cwd(),
   },
 }
 
