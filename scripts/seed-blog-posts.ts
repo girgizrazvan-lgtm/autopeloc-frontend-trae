@@ -166,11 +166,11 @@ async function main() {
             excerpt: post.excerpt,
             content: post.content,
             category: post.category,
-            readTime: post.readTime,
+            read_time: post.readTime,
             keywords: post.keywords,
-            publishedAt: post.publishedAt,
-            isPublished: post.isPublished,
-            ogImage: post.ogImage,
+            published_at: post.publishedAt,
+            is_published: post.isPublished,
+            og_image: post.ogImage,
           },
         })
 

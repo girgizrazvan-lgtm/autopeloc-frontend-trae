@@ -1,8 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  typescript: {
-    ignoreBuildErrors: true,
-  },
   images: {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
@@ -62,6 +59,10 @@ const nextConfig = {
           {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=()'
+          },
+          {
+            key: 'Content-Security-Policy',
+            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://hebbkx1anhila5yf.public.blob.vercel-storage.com https:; font-src 'self' data:; connect-src 'self' https://vercel.live https://vitals.vercel-insights.com https://ip-api.com https://ipapi.co; frame-ancestors 'self'; base-uri 'self'; form-action 'self';"
           }
         ]
       },
@@ -90,6 +91,9 @@ const nextConfig = {
   poweredByHeader: false,
   experimental: {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
+    serverActions: {
+      bodySizeLimit: '2mb',
+    },
   },
   // Silence workspace root inference warning in Vercel builds
   turbopack: {

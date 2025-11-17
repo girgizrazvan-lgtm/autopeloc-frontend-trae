@@ -1,6 +1,17 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { Resend } from "resend"
 
+// HTML escape function to prevent XSS in email templates
+function escapeHtml(unsafe: string | undefined | null): string {
+  if (!unsafe) return ""
+  return String(unsafe)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;")
+}
+
 function formatDate(dateString: string): string {
   if (!dateString) return ""
 
@@ -75,7 +86,7 @@ export async function POST(request: NextRequest) {
 </tr>
 <tr>
 <td style="padding: 40px 40px 20px 40px;">
-<p style="margin: 0 0 20px 0; font-size: 16px; color: #000000; font-family: Arial, sans-serif;">Salutare ${reservationData.clientName},</p>
+<p style="margin: 0 0 20px 0; font-size: 16px; color: #000000; font-family: Arial, sans-serif;">Salutare ${escapeHtml(reservationData.clientName)},</p>
 <p style="margin: 0 0 30px 0; font-size: 14px; color: #333333; line-height: 1.6; font-family: Arial, sans-serif;">Cererea ta a fost înregistrată cu succes! Îți mulțumim că ai ales serviciile autopeloc.ro.</p>
 </td>
 </tr>
@@ -84,11 +95,11 @@ export async function POST(request: NextRequest) {
 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border: 1px solid #cccccc; background-color: #fafafa;">
 <tr>
 <td style="padding: 12px 20px; border-bottom: 1px solid #e0e0e0; font-size: 14px; color: #000000; font-weight: bold; font-family: Arial, sans-serif; width: 50%;">Vehicul rezervat</td>
-<td style="padding: 12px 20px; border-bottom: 1px solid #e0e0e0; font-size: 14px; color: #333333; font-family: Arial, sans-serif; text-align: right;">${reservationData.vehicleName}</td>
+<td style="padding: 12px 20px; border-bottom: 1px solid #e0e0e0; font-size: 14px; color: #333333; font-family: Arial, sans-serif; text-align: right;">${escapeHtml(reservationData.vehicleName)}</td>
 </tr>
 <tr>
 <td style="padding: 12px 20px; border-bottom: 1px solid #e0e0e0; font-size: 14px; color: #000000; font-weight: bold; font-family: Arial, sans-serif;">Oraș</td>
-<td style="padding: 12px 20px; border-bottom: 1px solid #e0e0e0; font-size: 14px; color: #333333; font-family: Arial, sans-serif; text-align: right;">${reservationData.city}</td>
+<td style="padding: 12px 20px; border-bottom: 1px solid #e0e0e0; font-size: 14px; color: #333333; font-family: Arial, sans-serif; text-align: right;">${escapeHtml(reservationData.city)}</td>
 </tr>
 <tr>
 <td style="padding: 12px 20px; border-bottom: 1px solid #e0e0e0; font-size: 14px; color: #000000; font-weight: bold; font-family: Arial, sans-serif;">Vinovat</td>

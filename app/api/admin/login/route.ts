@@ -1,8 +1,11 @@
 import { cookies } from "next/headers"
 import { NextRequest, NextResponse } from "next/server"
 import { loginSchema } from "@/lib/validations"
+import bcrypt from "bcryptjs"
 
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "razvan@autopeloc.ro"
+// Support both hashed and plain-text passwords for migration period
+const ADMIN_PASSWORD_HASH = process.env.ADMIN_PASSWORD_HASH || ""
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || ""
 
 export async function GET() {
@@ -36,31 +39,45 @@ export async function POST(req: NextRequest) {
     const { email, password } = validationResult.data
 
     // Check if credentials are configured
-    // In development, allow empty password with a warning
-    if (!ADMIN_PASSWORD && process.env.NODE_ENV === "production") {
-      console.error("[Login] ADMIN_PASSWORD environment variable is not set in production")
-      return NextResponse.json({ error: "Server configuration error" }, { status: 500 })
+    if (!ADMIN_PASSWORD_HASH && !ADMIN_PASSWORD) {
+      if (process.env.NODE_ENV === "production") {
+        console.error("[Login] ADMIN_PASSWORD_HASH environment variable is not set in production")
+        return NextResponse.json({ error: "Server configuration error" }, { status: 500 })
+      }
+      // In development, allow default password "admin123"
+      console.warn("[Login] No password configured. Using default password 'admin123' for development")
     }
 
-    // In development without ADMIN_PASSWORD set, allow default password
-    const expectedPassword = ADMIN_PASSWORD || (process.env.NODE_ENV !== "production" ? "admin123" : "")
-    
-    if (!expectedPassword) {
-      console.error("[Login] No password configured. Set ADMIN_PASSWORD in .env.local")
-      return NextResponse.json({ 
-        error: "Server configuration error: ADMIN_PASSWORD not set. Please set it in .env.local file." 
-      }, { status: 500 })
+    // Verify email matches
+    if (email !== ADMIN_EMAIL) {
+      console.warn("[Login] Invalid email attempted:", email)
+      return NextResponse.json({ error: "Credențiale invalide" }, { status: 401 })
     }
 
-    if (email === ADMIN_EMAIL && password === expectedPassword) {
-      // Set admin session cookie (12 hours)
+    // Verify password (prefer hashed password)
+    let isPasswordValid = false
+
+    if (ADMIN_PASSWORD_HASH) {
+      // Use bcrypt to verify hashed password (SECURE)
+      isPasswordValid = await bcrypt.compare(password, ADMIN_PASSWORD_HASH)
+    } else if (ADMIN_PASSWORD) {
+      // Fallback to plain-text comparison (INSECURE - for migration only)
+      console.warn("[Login] Using plain-text password comparison. Please migrate to ADMIN_PASSWORD_HASH!")
+      isPasswordValid = password === ADMIN_PASSWORD
+    } else if (process.env.NODE_ENV !== "production") {
+      // Development default
+      isPasswordValid = password === "admin123"
+    }
+
+    if (isPasswordValid) {
+      // Set admin session cookie (2 hours for security)
       try {
         const cookieStore = await cookies()
         cookieStore.set("admin_session", "1", {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
           sameSite: "lax",
-          maxAge: 60 * 60 * 12,
+          maxAge: 60 * 60 * 2, // 2 hours (reduced from 12 for security)
           path: "/",
         })
 
