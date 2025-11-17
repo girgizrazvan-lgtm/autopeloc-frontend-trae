@@ -20,7 +20,7 @@ export async function GET() {
   try {
     // Check if table exists by trying to query
     const posts = await prisma.blogPost.findMany({
-      orderBy: { publishedAt: "desc" },
+      orderBy: { published_at: "desc" },
     })
     return NextResponse.json(posts)
   } catch (error: any) {
