@@ -10,21 +10,17 @@ export async function POST() {
   }
 
   try {
-    const statements = [
-      `ALTER TABLE IF EXISTS public.live_visitors ADD COLUMN IF NOT EXISTS country_code text;`,
-      `ALTER TABLE IF EXISTS public.live_visitors ADD COLUMN IF NOT EXISTS country text;`,
-      `ALTER TABLE IF EXISTS public.live_visitors ADD COLUMN IF NOT EXISTS region text;`,
-      `ALTER TABLE IF EXISTS public.live_visitors ADD COLUMN IF NOT EXISTS city text;`,
-      `ALTER TABLE IF EXISTS public.live_visitors ADD COLUMN IF NOT EXISTS latitude double precision;`,
-      `ALTER TABLE IF EXISTS public.live_visitors ADD COLUMN IF NOT EXISTS longitude double precision;`,
-      `ALTER TABLE IF EXISTS public.live_visitors ADD COLUMN IF NOT EXISTS is_bot boolean DEFAULT false;`,
-      `ALTER TABLE IF EXISTS public.live_visitors ADD COLUMN IF NOT EXISTS session_start timestamptz DEFAULT now();`,
-      `CREATE UNIQUE INDEX IF NOT EXISTS live_visitors_session_id_idx ON public.live_visitors(session_id);`,
-    ]
-
-    for (const sql of statements) {
-      await prisma.$executeRawUnsafe(sql)
-    }
+    // Use $executeRaw with template literals instead of $executeRawUnsafe
+    // This is safer as it uses parameterized queries when possible
+    await prisma.$executeRaw`ALTER TABLE IF EXISTS public.live_visitors ADD COLUMN IF NOT EXISTS country_code text;`
+    await prisma.$executeRaw`ALTER TABLE IF EXISTS public.live_visitors ADD COLUMN IF NOT EXISTS country text;`
+    await prisma.$executeRaw`ALTER TABLE IF EXISTS public.live_visitors ADD COLUMN IF NOT EXISTS region text;`
+    await prisma.$executeRaw`ALTER TABLE IF EXISTS public.live_visitors ADD COLUMN IF NOT EXISTS city text;`
+    await prisma.$executeRaw`ALTER TABLE IF EXISTS public.live_visitors ADD COLUMN IF NOT EXISTS latitude double precision;`
+    await prisma.$executeRaw`ALTER TABLE IF EXISTS public.live_visitors ADD COLUMN IF NOT EXISTS longitude double precision;`
+    await prisma.$executeRaw`ALTER TABLE IF EXISTS public.live_visitors ADD COLUMN IF NOT EXISTS is_bot boolean DEFAULT false;`
+    await prisma.$executeRaw`ALTER TABLE IF EXISTS public.live_visitors ADD COLUMN IF NOT EXISTS session_start timestamptz DEFAULT now();`
+    await prisma.$executeRaw`CREATE UNIQUE INDEX IF NOT EXISTS live_visitors_session_id_idx ON public.live_visitors(session_id);`
 
     return NextResponse.json({ ok: true })
   } catch (error: any) {

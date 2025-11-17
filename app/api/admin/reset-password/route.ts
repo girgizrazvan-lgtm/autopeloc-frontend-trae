@@ -3,30 +3,26 @@ import { prisma } from "@/lib/db"
 import crypto from "crypto"
 import { Resend } from "resend"
 import { passwordResetRequestSchema, passwordResetSchema } from "@/lib/validations"
-import { writeFile } from "fs/promises"
-import { join } from "path"
+import bcrypt from "bcryptjs"
 
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "razvan@autopeloc.ro"
-const ADMIN_PASSWORD_FILE = process.env.ADMIN_PASSWORD_FILE || join(process.cwd(), ".admin-password")
 const RESEND_API_KEY = process.env.RESEND_API_KEY
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3001"
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "noreply@autopeloc.ro"
 
-// Helper to update password in environment (for Vercel/hosting platforms, update env var manually)
-async function updateAdminPassword(newPassword: string): Promise<void> {
-  // Note: In production with Vercel/other platforms, you need to update env vars manually
-  // This writes to a file as a fallback, but the preferred method is updating env vars
-  try {
-    // Try to write to a file (not recommended for production, but useful for development)
-    if (process.env.NODE_ENV !== "production") {
-      await writeFile(ADMIN_PASSWORD_FILE, newPassword.trim(), "utf-8")
-    }
-    // In production, the user needs to update ADMIN_PASSWORD env var manually
-    // Log the new password hash or provide instructions
-    console.warn("Password updated. Please update ADMIN_PASSWORD environment variable with the new password.")
-  } catch (error) {
-    console.error("Could not write password file:", error)
-  }
+// Helper to generate password hash (NEVER store plain-text passwords)
+async function generatePasswordHash(newPassword: string): Promise<string> {
+  const saltRounds = 12
+  const hash = await bcrypt.hash(newPassword, saltRounds)
+  console.warn("========================================")
+  console.warn("NEW ADMIN PASSWORD HASH GENERATED")
+  console.warn("========================================")
+  console.warn("Please update your ADMIN_PASSWORD_HASH environment variable with:")
+  console.warn(hash)
+  console.warn("========================================")
+  console.warn("IMPORTANT: Update ADMIN_PASSWORD_HASH in your hosting platform's environment variables")
+  console.warn("========================================")
+  return hash
 }
 
 // POST - Request password reset
@@ -196,8 +192,8 @@ export async function PUT(req: NextRequest) {
         return NextResponse.json({ error: "Token invalid sau expirat" }, { status: 400 })
       }
 
-      // Update password
-      await updateAdminPassword(newPassword)
+      // Generate password hash (never store plain-text)
+      const passwordHash = await generatePasswordHash(newPassword)
 
       // Mark token as used
       try {
@@ -220,10 +216,9 @@ export async function PUT(req: NextRequest) {
 
       return NextResponse.json({
         ok: true,
-        message: "Parolă resetată cu succes. Te rugăm să actualizezi variabila de mediu ADMIN_PASSWORD cu noua parolă în platforma de hosting.",
-        warning: process.env.NODE_ENV === "production" 
-          ? "În producție, actualizează variabila de mediu ADMIN_PASSWORD în Vercel/panel-ul de hosting."
-          : "Parola a fost salvată local. Pentru producție, actualizează ADMIN_PASSWORD în variabilele de mediu.",
+        message: "Parolă resetată cu succes. Verifică log-urile server pentru hash-ul parolei și actualizează ADMIN_PASSWORD_HASH în variabilele de mediu.",
+        warning: "IMPORTANT: Actualizează variabila de mediu ADMIN_PASSWORD_HASH cu hash-ul afișat în log-uri.",
+        passwordHash: process.env.NODE_ENV !== "production" ? passwordHash : undefined,
       })
     } catch (dbError: any) {
       if (dbError.code === "P2021" || dbError.message?.includes("does not exist")) {

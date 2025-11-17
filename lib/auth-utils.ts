@@ -1,5 +1,6 @@
 import { createSupabaseServerClient } from "./supabase-server"
 import { cookies } from "next/headers"
+import bcrypt from "bcryptjs"
 
 // Session management
 export async function createSession(userId: string, email: string, role: string, company?: string) {
@@ -93,17 +94,12 @@ export async function clearSession() {
   cookieStore.delete("session")
 }
 
-// Password hashing (simple implementation - in production use bcrypt)
+// Password hashing with bcrypt (secure implementation)
 export async function hashPassword(password: string): Promise<string> {
-  // Simple hash for demo - in production use bcrypt
-  const encoder = new TextEncoder()
-  const data = encoder.encode(password)
-  const hashBuffer = await crypto.subtle.digest("SHA-256", data)
-  const hashArray = Array.from(new Uint8Array(hashBuffer))
-  return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("")
+  const saltRounds = 12 // Higher rounds = more secure but slower
+  return await bcrypt.hash(password, saltRounds)
 }
 
 export async function verifyPassword(password: string, hash: string): Promise<boolean> {
-  const passwordHash = await hashPassword(password)
-  return passwordHash === hash
+  return await bcrypt.compare(password, hash)
 }

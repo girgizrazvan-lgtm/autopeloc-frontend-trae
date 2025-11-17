@@ -11,8 +11,8 @@ function getOrCreateSessionId(): string {
   let sessionId = sessionStorage.getItem(storageKey)
 
   if (!sessionId) {
-    // Generate a unique session ID
-    sessionId = `visitor_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`
+    // Generate a cryptographically secure unique session ID
+    sessionId = `visitor_${crypto.randomUUID()}`
     sessionStorage.setItem(storageKey, sessionId)
   }
 

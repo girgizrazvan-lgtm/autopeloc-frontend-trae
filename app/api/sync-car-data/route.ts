@@ -1,12 +1,31 @@
 import { NextResponse } from "next/server"
 
+// Maximum CSV file size (10MB)
+const MAX_CSV_SIZE = 10 * 1024 * 1024
+
 export async function GET() {
   try {
     const csvUrl =
       "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/SIPP_COMMERCIAL_EXTENDED_FIXED-lFVtShGcnRHycy2w31N5Pi5j1WrF5u.csv"
 
     const response = await fetch(csvUrl)
+
+    // Check file size before parsing (prevent memory exhaustion)
+    const contentLength = response.headers.get('content-length')
+    if (contentLength && parseInt(contentLength) > MAX_CSV_SIZE) {
+      return NextResponse.json({
+        error: `Fișierul CSV este prea mare (max ${MAX_CSV_SIZE / 1024 / 1024}MB)`
+      }, { status: 413 })
+    }
+
     const csvText = await response.text()
+
+    // Additional check after loading
+    if (csvText.length > MAX_CSV_SIZE) {
+      return NextResponse.json({
+        error: `Fișierul CSV este prea mare (max ${MAX_CSV_SIZE / 1024 / 1024}MB)`
+      }, { status: 413 })
+    }
 
     const lines = csvText.split("\n").filter((line) => line.trim())
     const headers = lines[0].split(";")
