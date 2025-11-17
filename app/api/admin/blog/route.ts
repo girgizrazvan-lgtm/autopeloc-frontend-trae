@@ -81,10 +81,10 @@ export async function POST(req: NextRequest) {
         content: sanitizedContent,
         excerpt: sanitizedExcerpt,
         category,
-        readTime: readTime || null,
+        read_time: readTime || null,
         keywords: keywords || null,
-        isPublished: isPublished ?? true,
-        ogImage: ogImage || null,
+        is_published: isPublished ?? true,
+        og_image: ogImage || null,
       },
     })
 
@@ -154,10 +154,10 @@ export async function PUT(req: NextRequest) {
         content: sanitizedContent,
         excerpt: sanitizedExcerpt,
         category,
-        readTime: readTime || null,
+        read_time: readTime || null,
         keywords: keywords || null,
-        isPublished,
-        ogImage: ogImage || null,
+        is_published: isPublished,
+        og_image: ogImage || null,
       },
     })
 
