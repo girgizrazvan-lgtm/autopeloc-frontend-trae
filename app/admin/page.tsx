@@ -20,6 +20,7 @@ import {
 import { Trash2, Edit, Plus, LogOut, Eye, Users, Activity, FileText, HelpCircle, Car, Info, Shield, Menu, X, Loader2, CheckCircle2, XCircle, AlertCircle } from "lucide-react"
 import { ImageUpload } from "@/components/admin/image-upload"
 import { LiveMap } from "@/components/admin/live-map"
+import { ConfirmDialog } from "@/components/confirm-dialog"
 import { createClient as createSupabaseClient } from "@supabase/supabase-js"
 import Image from "next/image"
 
@@ -1072,14 +1073,19 @@ export default function AdminPage() {
                         >
                           <Edit className="w-4 h-4" />
                         </Button>
-                        <Button 
-                          variant="destructive" 
-                          size="sm" 
-                          onClick={() => handleDelete("blog", post.id)}
-                          className="h-9 bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800/50 rounded-[8px] transition-all duration-200 hover:bg-red-100 dark:hover:bg-red-950/50"
+                        <ConfirmDialog
+                          title="Șterge articol de blog?"
+                          description={`Ești sigur că vrei să ștergi articolul "${post.title}"? Această acțiune nu poate fi anulată.`}
+                          onConfirm={() => handleDelete("blog", post.id)}
                         >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            className="h-9 bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800/50 rounded-[8px] transition-all duration-200 hover:bg-red-100 dark:hover:bg-red-950/50"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </ConfirmDialog>
                       </div>
                     </div>
                     ))
@@ -1267,14 +1273,19 @@ export default function AdminPage() {
                         >
                           <Edit className="w-4 h-4" />
                         </Button>
-                        <Button 
-                          variant="destructive" 
-                          size="sm" 
-                          onClick={() => handleDelete("faq", faq.id)}
-                          className="h-9 bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800/50 rounded-[8px] transition-all duration-200 hover:bg-red-100 dark:hover:bg-red-950/50"
+                        <ConfirmDialog
+                          title="Șterge întrebare frecventă?"
+                          description={`Ești sigur că vrei să ștergi întrebarea "${faq.question}"? Această acțiune nu poate fi anulată.`}
+                          onConfirm={() => handleDelete("faq", faq.id)}
                         >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            className="h-9 bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800/50 rounded-[8px] transition-all duration-200 hover:bg-red-100 dark:hover:bg-red-950/50"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </ConfirmDialog>
                       </div>
                       </div>
                       ))}
@@ -1624,14 +1635,19 @@ export default function AdminPage() {
                         >
                           <Edit className="w-4 h-4" />
                         </Button>
-                        <Button 
-                          variant="destructive" 
-                          size="sm" 
-                          onClick={() => handleDelete("vehicle", vehicle.id)}
-                          className="h-9 bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800/50 rounded-[8px] transition-all duration-200 hover:bg-red-100 dark:hover:bg-red-950/50"
+                        <ConfirmDialog
+                          title="Șterge vehicul?"
+                          description={`Ești sigur că vrei să ștergi vehiculul "${vehicle.brand} ${vehicle.model}"? Această acțiune nu poate fi anulată.`}
+                          onConfirm={() => handleDelete("vehicle", vehicle.id)}
                         >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            className="h-9 bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800/50 rounded-[8px] transition-all duration-200 hover:bg-red-100 dark:hover:bg-red-950/50"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </ConfirmDialog>
                       </div>
                     </div>
                     ))}
@@ -1776,14 +1792,19 @@ export default function AdminPage() {
                         >
                           <Edit className="w-4 h-4" />
                         </Button>
-                        <Button 
-                          variant="destructive" 
-                          size="sm" 
-                          onClick={() => handleDelete("about", section.id)}
-                          className="h-9 bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800/50 rounded-[8px] transition-all duration-200 hover:bg-red-100 dark:hover:bg-red-950/50"
+                        <ConfirmDialog
+                          title="Șterge secțiune despre noi?"
+                          description={`Ești sigur că vrei să ștergi secțiunea "${section.title || section.section}"? Această acțiune nu poate fi anulată.`}
+                          onConfirm={() => handleDelete("about", section.id)}
                         >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            className="h-9 bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800/50 rounded-[8px] transition-all duration-200 hover:bg-red-100 dark:hover:bg-red-950/50"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </ConfirmDialog>
                       </div>
                     </div>
                     ))
@@ -2183,7 +2204,13 @@ export default function AdminPage() {
                         </div>
                         <div className="flex gap-2 mt-3">
                           <Button size="sm" variant="outline" onClick={() => updateWebsiteRequestStatus(req.id, "completed")}>Marchează completat</Button>
-                          <Button size="sm" variant="destructive" onClick={() => deleteWebsiteRequest(req.id)}>Șterge</Button>
+                          <ConfirmDialog
+                            title="Șterge cerere?"
+                            description={`Ești sigur că vrei să ștergi cererea de tip "${req.type}"? Această acțiune nu poate fi anulată.`}
+                            onConfirm={() => deleteWebsiteRequest(req.id)}
+                          >
+                            <Button size="sm" variant="destructive">Șterge</Button>
+                          </ConfirmDialog>
                         </div>
                       </div>
                     ))}
@@ -2223,7 +2250,13 @@ export default function AdminPage() {
                           <span className="text-sm font-medium truncate max-w-[40vw]">{b.pathname}</span>
                           <a href={b.url} target="_blank" rel="noreferrer" className="text-xs text-[#14b8a6]">Deschide</a>
                         </div>
-                        <Button size="sm" variant="destructive" onClick={() => deleteBlob(b.url)}>Șterge</Button>
+                        <ConfirmDialog
+                          title="Șterge fișier?"
+                          description={`Ești sigur că vrei să ștergi fișierul "${b.pathname}"? Această acțiune nu poate fi anulată.`}
+                          onConfirm={() => deleteBlob(b.url)}
+                        >
+                          <Button size="sm" variant="destructive">Șterge</Button>
+                        </ConfirmDialog>
                       </div>
                     ))}
                   </div>
